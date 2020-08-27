@@ -33,7 +33,7 @@
         },
         {
           "type": "shell",
-          "script": "./setup.sh"
+          "inline": "sudo apt-get install nodejs"
         }
     ]
   }
