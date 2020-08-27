@@ -16,7 +16,7 @@
           "most_recent": true
         },
         "instance_type": "t3.small",
-        "ssh_username": "ec2-user",
+        "ssh_username": "ubuntu",
         "ami_name": "packer-example {{timestamp}}"
       }
     ],
