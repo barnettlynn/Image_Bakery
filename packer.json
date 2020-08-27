@@ -33,7 +33,7 @@
         },
         {
           "type": "shell",
-          "inline": "sudo pkg install node"
+          "inline": "sudo apt install nodejs"
         }
     ]
   }
