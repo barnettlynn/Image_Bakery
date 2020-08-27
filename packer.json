@@ -7,6 +7,7 @@
         "region": "us-east-1",
         "vpc_id": "vpc-0e0aeea1697f177cb",
         "subnet_id": "subnet-00113aa244fc5c0d8",
+        "user_data_file": "user-data",
         "source_ami_filter": {
           "filters": {
             "virtualization-type": "hvm",
@@ -20,5 +21,25 @@
         "ssh_username": "ec2-user",
         "ami_name": "packer-example {{timestamp}}"
       }
+    ],
+    "provisioners": [
+        {
+          "type": "file",
+          "source": "./app.js",
+          "destination": "/home/ubuntu/app.js"
+        },
+        {
+            "type": "file",
+            "source": "./setup.sh",
+            "destination": "/home/ubuntu/"
+          },
+        {
+          "type": "shell",
+          "inline": ["ls -al /home/ubuntu", "cat /home/ubuntu/welcome.txt"]
+        },
+        {
+          "type": "shell",
+          "script": "./setup.sh"
+        }
     ]
   }
