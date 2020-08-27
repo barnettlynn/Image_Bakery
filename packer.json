@@ -30,10 +30,6 @@
             "type": "file",
             "source": "./setup.sh",
             "destination": "/home/ubuntu/"
-          },
-        {
-          "type": "shell",
-          "inline": ["ls -al /home/ubuntu", "cat /home/ubuntu/welcome.txt"]
         },
         {
           "type": "shell",
