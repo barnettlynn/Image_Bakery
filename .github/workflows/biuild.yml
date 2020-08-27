@@ -33,13 +33,13 @@ jobs:
         echo test, and deploy your project.
         # Runs a set of commands using the runners shell
     - name: Packer Validate
-      run: packer validate
+      run: packer validate packer.json
       env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_KEY_SECRET }}
           AWS_DEFAULT_REGION: us-east-1
     - name: Packer Build
-      run: packer build
+      run: packer build packer.json
       env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_KEY_SECRET }}
