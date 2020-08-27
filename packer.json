@@ -5,6 +5,8 @@
         "access_key": "AKIAUACF2XUCMHA4OYP2",
         "secret_key": "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",
         "region": "us-east-1",
+        "vpc_id": "vpc-0e0aeea1697f177cb",
+        "subnet_id": "subnet-00113aa244fc5c0d8",
         "source_ami_filter": {
           "filters": {
             "virtualization-type": "hvm",
