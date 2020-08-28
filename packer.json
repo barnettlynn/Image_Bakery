@@ -9,7 +9,10 @@
         "source_ami": "ami-0bcc094591f354be2",
         "instance_type": "t3.small",
         "ssh_username": "ubuntu",
-        "ami_name": "packer-example {{timestamp}}"
+        "ami_name": "bakery-example {{timestamp}}",
+        "tags": {
+          "Name":"BaseAPP"
+        }
       }
     ],
     "provisioners": [
