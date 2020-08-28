@@ -6,7 +6,7 @@
         "vpc_id": "vpc-0e0aeea1697f177cb",
         "subnet_id": "subnet-00113aa244fc5c0d8",
         "user_data_file": "./user-data",
-        "source_ami": "ami-01308733824f6a392",
+        "source_ami": "ami-0a75daf6044a8c8a1",
         "instance_type": "t3.small",
         "ssh_username": "ubuntu",
         "ami_name": "packer-example {{timestamp}}"
