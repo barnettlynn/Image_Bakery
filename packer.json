@@ -25,7 +25,7 @@
         },
         {
           "type": "shell",
-          "inline": ["sudo apt -y update", "sudo apt -y install nodejs", "sudo apt install npm"]
+          "inline": ["sudo apt -y update", "sudo apt -y install nodejs", "sudo apt install npm", "nodejs -v"]
         }
     ]
   }
