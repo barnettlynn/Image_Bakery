@@ -11,7 +11,7 @@
         "ssh_username": "ubuntu",
         "ami_name": "bakery-example {{timestamp}}",
         "tags": {
-          "Name":"BaseAPP"
+          "Name":"BooksApp"
         }
       }
     ],
