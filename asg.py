@@ -2,6 +2,7 @@ import boto3, json
 from datetime import datetime, date
 import pytz
 
+launchTemplateID = "lt-054cca151bb72789b"
 
 ec2 = boto3.client("ec2")
 autoscaling = boto3.client('autoscaling')
@@ -24,7 +25,7 @@ def get_most_recent_ami(tag):
         if creationDate > mostResentDate:
             mostResentDate = creationDate
             amiID = image["ImageId"]
-    print(amiID)
+    return amiID
 
 def set_desired_capacity(capacity, name, client):
     response = client.set_desired_capacity(
@@ -62,9 +63,9 @@ def create_launch_template_version(launchTemplateID, imageID):
     )
     print(response)
 
-get_most_recent_ami("BooksApp")
-# create_launch_template_version("lt-054cca151bb72789b", "ami-0c6e927658375feb1")
-# set_default_launch_template_version("lt-054cca151bb72789b")
+amid = get_most_recent_ami("BooksApp")
+create_launch_template_version(amid, launchTemplateID)
+set_default_launch_template_version(launchTemplateID)
 
 
 
