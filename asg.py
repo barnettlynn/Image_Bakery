@@ -1,11 +1,37 @@
-import boto3, json
+import boto3, json, time
 from datetime import datetime, date
 import pytz
+
 
 launchTemplateID = "lt-054cca151bb72789b"
 
 ec2 = boto3.client("ec2")
 autoscaling = boto3.client('autoscaling')
+
+def start_instance_refresh(asgname):
+    response = autoscaling.start_instance_refresh(
+    AutoScalingGroupName=asgname,
+    Strategy='Rolling',
+    Preferences={
+        'MinHealthyPercentage': 90,
+        'InstanceWarmup': 30
+    }
+)
+
+def get_refresh_data():
+    still_running = True
+    while still_running:
+        still_running = False
+        response = autoscaling.describe_instance_refreshes(
+            AutoScalingGroupName='bakeDemo',
+            MaxRecords=100
+        )
+        for r in response["InstanceRefreshes"]:
+            if r["Status"] != "Successful":
+                still_running = True
+            print(r["Status"])
+        time.sleep(30)
+
 
 def get_most_recent_ami(tag):
     tag_filter=[
@@ -63,9 +89,15 @@ def create_launch_template_version(launchTemplateID, imageID):
     )
     print(response)
 
-amid = get_most_recent_ami("BooksApp")
-create_launch_template_version(launchTemplateID, amid)
-set_default_launch_template_version(launchTemplateID)
+# amid = get_most_recent_ami("BooksApp")
+# create_launch_template_version(launchTemplateID, amid)
+# set_default_launch_template_version(launchTemplateID)
+set_desired_capacity(10, "bakeDemo", autoscaling)
+time.sleep(120)
+start_instance_refresh("bakeDemo")
+# get_refresh_data()
+time.sleep(120)
+set_desired_capacity(10, "bakeDemo", autoscaling)
 
 
 
