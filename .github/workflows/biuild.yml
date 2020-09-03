@@ -59,7 +59,7 @@ jobs:
     - name: Get AMI ID
       run: |
         python3 --version
-        pip3 install pipenv
+        sudo apt install pipenv
         pipenv
         python asg.py
       env:
