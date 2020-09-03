@@ -45,9 +45,9 @@ def set_scaling_limits(min, max, desired, name, client):
     )
     print(json.dumps(response))
 
-def set_default_launch_template_version(launchTemplateID):
+def set_default_launch_template_version(ltid):
     response = ec2.modify_launch_template(
-            LaunchTemplateId="lt-054cca151bb72789b",
+            LaunchTemplateId=ltid,
             DefaultVersion="$Latest"
         )
     print(response)
@@ -64,7 +64,7 @@ def create_launch_template_version(launchTemplateID, imageID):
     print(response)
 
 amid = get_most_recent_ami("BooksApp")
-create_launch_template_version(amid, launchTemplateID)
+create_launch_template_version(launchTemplateID, amid)
 set_default_launch_template_version(launchTemplateID)
 
 
