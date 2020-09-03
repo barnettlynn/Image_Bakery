@@ -60,7 +60,7 @@ jobs:
       run: |
         python3 --version
         sudo pip3 install pipenv
-        which python
+        which python3
         pipenv install
         which python
         python asg.py
