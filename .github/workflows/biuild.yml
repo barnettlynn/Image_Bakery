@@ -49,10 +49,17 @@ jobs:
       #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
       #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_KEY_SECRET }}
       #     AWS_DEFAULT_REGION: us-east-1
+    # - name: Install Python 3
+    #   run: |
+    #     sudo apt update
+    #     sudo apt install software-properties-common
+    #     sudo add-apt-repository ppa:deadsnakes/ppa
+    #     sudo apt update
+    #     sudo apt install python3.8
     - name: Get AMI ID
       run: |
-        python --version
-        pip install pipenv
+        python3 --version
+        pip3 install pipenv
         pipenv install
         python asg.py
       env:
