@@ -51,6 +51,7 @@ jobs:
       #     AWS_DEFAULT_REGION: us-east-1
     - name: Get AMI ID
       run: |
+        pip install pipenv
         pipenv install
         python asg.py
       env:
