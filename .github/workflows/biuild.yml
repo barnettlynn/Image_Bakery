@@ -59,9 +59,8 @@ jobs:
     - name: Get AMI ID
       run: |
         python3 --version
-        sudo pip3 install pipenv
-        pipenv --python /usr/bin/python3 install
-        pipenv --python /usr/bin/python3 shell
+        pip3 install boto3
+        pip3 install pytz
         python3 asg.py
       env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
