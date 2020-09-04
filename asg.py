@@ -91,15 +91,15 @@ def create_launch_template_version(launchTemplateID, imageID):
     )
     print(response)
 
-# amid = get_most_recent_ami("BooksApp")
-# create_launch_template_version(launchTemplateID, amid)
-# set_default_launch_template_version(launchTemplateID)
+amid = get_most_recent_ami("BooksApp")
+create_launch_template_version(launchTemplateID, amid)
+set_default_launch_template_version(launchTemplateID)
 set_desired_capacity(10, "bakeDemo", autoscaling)
 time.sleep(120)
 start_instance_refresh("bakeDemo")
 # get_refresh_data()
 time.sleep(120)
-set_desired_capacity(10, "bakeDemo", autoscaling)
+set_desired_capacity(1, "bakeDemo", autoscaling)
 
 
 
