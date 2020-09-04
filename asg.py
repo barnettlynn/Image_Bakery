@@ -2,8 +2,10 @@ import boto3, json, time
 from datetime import datetime, date
 import pytz
 
+# Get refresh ID
+# Search by refresh ID
 
-launchTemplateID = "lt-054cca151bb72789b"
+launchTemplateID = "lt-067b01b2082ab60c5"
 
 ec2 = boto3.client("ec2")
 autoscaling = boto3.client('autoscaling')

@@ -18,8 +18,8 @@
     "provisioners": [
         {
           "type": "file",
-          "source": "./app.js",
-          "destination": "/home/ubuntu/app.js"
+          "source": "./",
+          "destination": "/home/ubuntu"
         },
         {
             "type": "file",
