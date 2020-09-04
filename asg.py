@@ -4,6 +4,8 @@ import pytz
 
 # Get refresh ID
 # Search by refresh ID
+# Remove OLD AMI's
+# Remove old LT versions?
 
 launchTemplateID = "lt-067b01b2082ab60c5"
 
@@ -17,16 +19,20 @@ def start_instance_refresh(asgname):
     Preferences={
         'MinHealthyPercentage': 90,
         'InstanceWarmup': 30
-    }
-)
+    })
+    print(response["InstanceRefreshId"])
+    return response["InstanceRefreshId"]
 
-def get_refresh_data():
+def get_refresh_data(refreshid):
     still_running = True
     while still_running:
         still_running = False
         response = autoscaling.describe_instance_refreshes(
             AutoScalingGroupName='bakeDemo',
-            MaxRecords=100
+            MaxRecords=100,
+            InstanceRefreshIds=[
+                refreshid,
+            ],
         )
         for r in response["InstanceRefreshes"]:
             if r["Status"] != "Successful":
@@ -96,8 +102,8 @@ create_launch_template_version(launchTemplateID, amid)
 set_default_launch_template_version(launchTemplateID)
 set_desired_capacity(10, "bakeDemo", autoscaling)
 time.sleep(120)
-start_instance_refresh("bakeDemo")
-# get_refresh_data()
+refreshid = start_instance_refresh("bakeDemo")
+get_refresh_data(refreshid)
 time.sleep(120)
 set_desired_capacity(1, "bakeDemo", autoscaling)
 
