@@ -12,12 +12,20 @@ launchTemplateID = "lt-067b01b2082ab60c5"
 ec2 = boto3.client("ec2")
 autoscaling = boto3.client('autoscaling')
 
+# response = ec2.describe_launch_templates(
+#     LaunchTemplateNames=['books_app_launch_template'],
+#     MaxResults=100
+# )
+
+# print(json.dumps(response, indent=4, sort_keys=True, default=str))
+
+
 def start_instance_refresh(asgname):
     response = autoscaling.start_instance_refresh(
     AutoScalingGroupName=asgname,
     Strategy='Rolling',
     Preferences={
-        'MinHealthyPercentage': 90,
+        'MinHealthyPercentage': 10,
         'InstanceWarmup': 30
     })
     print(response["InstanceRefreshId"])
@@ -39,6 +47,13 @@ def get_refresh_data(refreshid):
                 still_running = True
             print(r["Status"])
         time.sleep(30)
+
+def get_launch_template_ID(name):
+    response = ec2.describe_launch_templates(
+    LaunchTemplateNames=['books_app_launch_template'],
+    MaxResults=100
+    )   
+    return response["LaunchTemplates"][0]["LaunchTemplateId"]
 
 
 def get_most_recent_ami(tag):
@@ -97,6 +112,7 @@ def create_launch_template_version(launchTemplateID, imageID):
     )
     print(response)
 
+launchTemplateID = get_launch_template_ID("books_app_launch_template")
 amid = get_most_recent_ami("BooksApp")
 create_launch_template_version(launchTemplateID, amid)
 set_default_launch_template_version(launchTemplateID)
