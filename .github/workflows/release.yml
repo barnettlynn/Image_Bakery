@@ -18,7 +18,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Terraform Init
-      run: terraform init ./infra
+      run: terraform init -reconfigure ./infra
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_KEY_SECRET }}
