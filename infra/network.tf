@@ -2,6 +2,13 @@ provider "aws" {
   region = "us-east-1"
 }
 
+terraform {
+  backend "s3" {
+    bucket = "tfstate-lynnbarnett"
+    key    = "prod"
+    region = "us-east-1"
+  }
+}
 # TODO: ACL
 
 
