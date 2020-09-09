@@ -1,1 +1,2 @@
 node_modules/
+.terraform/plugins/darwin_amd64/terraform-provider-aws_v3.5.0_x5
