@@ -3,8 +3,21 @@
       {
         "type": "amazon-ebs",
         "region": "us-east-1",
-        "vpc_id": "vpc-0e0aeea1697f177cb",
-        "subnet_id": "subnet-00113aa244fc5c0d8",
+        "vpc_filter": {
+          "filters": {
+            "tag:Name": "Boiler-VPC",
+            "isDefault": "false",
+            "cidr": "/16"
+          }
+        },
+        "subnet_filter": {
+          "filters": {
+            "tag:Name": "build",
+            "tag:Type":  "public"
+          },
+          "most_free": true,
+          "random": false
+        },
         "user_data_file": "./user-data.txt",
         "source_ami": "ami-0bcc094591f354be2",
         "instance_type": "t3.small",

@@ -29,6 +29,7 @@ resource "aws_subnet" "public_A" {
 
   tags = {
     Name = "public_A"
+    Type = "public",
     App = "Boiler"
   }
 }
@@ -41,6 +42,7 @@ resource "aws_subnet" "public_B" {
 
   tags = {
     Name = "public_B"
+    Type = "public"
     App = "Boiler"
   }
 }
@@ -51,6 +53,7 @@ resource "aws_subnet" "private_A" {
 
   tags = {
     Name = "private_A"
+    Type = "private"
     App = "Boiler"
   }
 }
@@ -61,6 +64,7 @@ resource "aws_subnet" "private_B" {
 
   tags = {
     Name = "private_B"
+    Type = "private"
     App = "Boiler"
   }
 }
