@@ -37,6 +37,7 @@ jobs:
           AWS_DEFAULT_REGION: us-east-1
     - name: Get AMI ID
       run: |
+            sudo apt-get install -y python-setuptools
             pip3 install boto3
             pip3 install pytz
             python3 asg.py

@@ -2,9 +2,9 @@ provider "aws" {
   region = "us-east-1"
 }
 
+# TODO: ACL
 # enable dns
-# enable autoassing ip
-# 
+
 terraform {
   backend "s3" {
     bucket = "tfstate-lynnbarnett"
@@ -12,8 +12,6 @@ terraform {
     region = "us-east-1"
   }
 }
-# TODO: ACL
-
 
 resource "aws_vpc" "main" {
   cidr_block       = "10.0.0.0/16"
@@ -263,7 +261,7 @@ resource "aws_launch_template" "base_launch_template" {
     }
   }
 
-ebs_optimized = true
+  ebs_optimized = true
 
 
   image_id = "ami-06b263d6ceff0b3dd"
@@ -299,13 +297,10 @@ resource "aws_autoscaling_group" "bar" {
   max_size                  = 5
   min_size                  = 0
   health_check_grace_period = 300
-  # availability_zones = ["us-east-1a", "us-east-1b"]
   health_check_type         = "ELB"
   desired_capacity          = 1
   force_delete              = true
-
-    vpc_zone_identifier       = [aws_subnet.public_B.id, aws_subnet.public_A.id]
-  
+  vpc_zone_identifier       = [aws_subnet.public_B.id, aws_subnet.public_A.id]
   mixed_instances_policy {
     launch_template {
       launch_template_specification {
@@ -325,5 +320,3 @@ resource "aws_autoscaling_group" "bar" {
     }
   }
 }
-
-# /home/ubuntu
