@@ -2,6 +2,9 @@ provider "aws" {
   region = "us-east-1"
 }
 
+# enable dns
+# enable autoassing ip
+# 
 terraform {
   backend "s3" {
     bucket = "tfstate-lynnbarnett"
@@ -26,6 +29,7 @@ resource "aws_subnet" "public_A" {
   vpc_id     = aws_vpc.main.id
   cidr_block = "10.0.1.0/24"
   availability_zone = "us-east-1a"
+  map_public_ip_on_launch = true
 
   tags = {
     Name = "public_A"
@@ -38,8 +42,7 @@ resource "aws_subnet" "public_B" {
   vpc_id     = aws_vpc.main.id
   cidr_block = "10.0.2.0/24"
   availability_zone = "us-east-1b"
-
-
+  map_public_ip_on_launch=true
   tags = {
     Name = "public_B"
     Type = "public"
@@ -199,6 +202,55 @@ resource "aws_lb" "app_lb" {
     }
 }
 
+resource "aws_security_group" "allow_tls" {
+  name        = "allow_tls"
+  description = "Allow TLS inbound traffic"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description = "TLS from VPC"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+    ingress {
+    description = "TLS from VPC"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+      ingress {
+    description = "TLS from VPC"
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+      ingress {
+    description = "TLS from VPC"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "Boiler"
+  }
+}
+
 resource "aws_launch_template" "base_launch_template" {
 
   name = "books_app_launch_template"
@@ -211,19 +263,15 @@ resource "aws_launch_template" "base_launch_template" {
     }
   }
 
-  ebs_optimized = true
+ebs_optimized = true
 
-  iam_instance_profile {
-    name = "test"
-  }
 
   image_id = "ami-06b263d6ceff0b3dd"
 
-  instance_market_options {
-    market_type = "spot"
-  }
+  # instance_market_options {
+  #   market_type = "spot"
+  # }
 
-  instance_type = "t3.micro"
 
   key_name = "lynn2"
 
@@ -231,18 +279,51 @@ resource "aws_launch_template" "base_launch_template" {
     enabled = true
   }
 
-  placement {
-    availability_zone = "us-east-1a"
-  }
+  # placement {
+  #   availability_zone = "us-east-1a"
+  # }
+
+  vpc_security_group_ids = [aws_security_group.allow_tls.id]
 
 
-  vpc_security_group_ids = ["sg-03553b33ab975b4d0"]
-
-
-  user_data = base64encode("node app.js")
+  user_data = filebase64("./setup.sh")
 
   tags = {
         Name = "Books_load_balancer"
         App = "Boiler"
   }
 }
+
+resource "aws_autoscaling_group" "bar" {
+  name                      = "bakeDemo"
+  max_size                  = 5
+  min_size                  = 0
+  health_check_grace_period = 300
+  # availability_zones = ["us-east-1a", "us-east-1b"]
+  health_check_type         = "ELB"
+  desired_capacity          = 1
+  force_delete              = true
+
+    vpc_zone_identifier       = [aws_subnet.public_B.id, aws_subnet.public_A.id]
+  
+  mixed_instances_policy {
+    launch_template {
+      launch_template_specification {
+        launch_template_id = aws_launch_template.base_launch_template.id
+        version = "$Latest"
+      }
+
+      override {
+        instance_type     = "t3.small"
+        weighted_capacity = "3"
+      }
+
+      override {
+        instance_type     = "t3a.small"
+        weighted_capacity = "2"
+      }
+    }
+  }
+}
+
+# /home/ubuntu

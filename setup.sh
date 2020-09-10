@@ -1,2 +1,3 @@
 #!bin/bash
-sudo apt-get install nodejs
+npm i /home/ubuntu/
+node /home/ubuntu/app.js
