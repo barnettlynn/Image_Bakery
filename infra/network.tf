@@ -290,7 +290,7 @@ resource "aws_autoscaling_group" "bakery_demo_ASG" {
   desired_capacity          = 1
   force_delete              = true
   vpc_zone_identifier       = [aws_subnet.public_B.id, aws_subnet.public_A.id]
-  # target_group_arns = [aws_lb_target_group.bakery_demo_TG.arn]
+  target_group_arns = [aws_lb_target_group.bakery_demo_TG.arn]
   mixed_instances_policy {
     launch_template {
       launch_template_specification {
