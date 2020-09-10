@@ -7,17 +7,10 @@ import pytz
 # Remove OLD AMI's
 # Remove old LT versions?
 
-launchTemplateID = "lt-067b01b2082ab60c5"
+# launchTemplateID = "lt-067b01b2082ab60c5"
 
 ec2 = boto3.client("ec2")
 autoscaling = boto3.client('autoscaling')
-
-# response = ec2.describe_launch_templates(
-#     LaunchTemplateNames=['books_app_launch_template'],
-#     MaxResults=100
-# )
-
-# print(json.dumps(response, indent=4, sort_keys=True, default=str))
 
 
 def start_instance_refresh(asgname):
