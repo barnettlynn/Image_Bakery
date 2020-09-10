@@ -29,7 +29,7 @@ def get_refresh_data(refreshid):
     while still_running:
         still_running = False
         response = autoscaling.describe_instance_refreshes(
-            AutoScalingGroupName='bakeDemo',
+            AutoScalingGroupName='bakery_demo_ASG',
             MaxRecords=100,
             InstanceRefreshIds=[
                 refreshid,
