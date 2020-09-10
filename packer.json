@@ -39,11 +39,6 @@
           "destination": "/home/ubuntu/"
         },
         {
-            "type": "file",
-            "source": "./setup.sh",
-            "destination": "/home/ubuntu/"
-        },
-        {
           "type": "shell",
           "inline": ["curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -", "sudo apt-get install -y nodejs", "node -v"]
         }
