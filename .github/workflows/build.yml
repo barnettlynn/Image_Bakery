@@ -20,16 +20,16 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
-    - name: App Lint
+    - name: Lint
       run: echo "Lint"
 
-    - name: App Test
+    - name: Test
       run: echo "Test"
 
-    - name: Packer Validate
+    - name: Valia Validate
       run: packer validate packer.json
 
-    - name: Packer Build
+    - name: Build AMI
       run: packer build packer.json
       env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}

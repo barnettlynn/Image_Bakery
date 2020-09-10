@@ -263,13 +263,7 @@ resource "aws_launch_template" "base_launch_template" {
 
   ebs_optimized = true
 
-
   image_id = "ami-06b263d6ceff0b3dd"
-
-  # instance_market_options {
-  #   market_type = "spot"
-  # }
-
 
   key_name = "lynn2"
 
@@ -277,14 +271,9 @@ resource "aws_launch_template" "base_launch_template" {
     enabled = true
   }
 
-  # placement {
-  #   availability_zone = "us-east-1a"
-  # }
-
   vpc_security_group_ids = [aws_security_group.allow_tls.id]
 
-
-  user_data = filebase64("./setup.sh")
+  user_data = filebase64("./user-data.sh")
 
   tags = {
         Name = "Books_load_balancer"
