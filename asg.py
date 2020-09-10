@@ -18,7 +18,7 @@ def start_instance_refresh(asgname):
     AutoScalingGroupName=asgname,
     Strategy='Rolling',
     Preferences={
-        'MinHealthyPercentage': 0,
+        'MinHealthyPercentage': 20,
         'InstanceWarmup': 30
     })
     print(response["InstanceRefreshId"])
@@ -107,13 +107,12 @@ def create_launch_template_version(launchTemplateID, imageID):
 
 launchTemplateID = get_launch_template_ID("books_app_launch_template")
 amid = get_most_recent_ami("BooksApp")
+set_desired_capacity(5, "bakery_demo_ASG", autoscaling)
 create_launch_template_version(launchTemplateID, amid)
 set_default_launch_template_version(launchTemplateID)
-set_desired_capacity(5, "bakery_demo_ASG", autoscaling)
 time.sleep(120)
 refreshid = start_instance_refresh("bakery_demo_ASG")
 get_refresh_data(refreshid)
-time.sleep(120)
 set_desired_capacity(0, "bakery_demo_ASG", autoscaling)
 
 
