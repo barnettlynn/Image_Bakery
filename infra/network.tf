@@ -281,15 +281,16 @@ resource "aws_launch_template" "base_launch_template" {
   }
 }
 
-resource "aws_autoscaling_group" "bar" {
-  name                      = "bakeDemo"
+resource "aws_autoscaling_group" "bakery_demo_ASG" {
+  name                      = "bakery_demo_ASG"
   max_size                  = 5
   min_size                  = 0
-  health_check_grace_period = 300
+  health_check_grace_period = 100
   health_check_type         = "ELB"
   desired_capacity          = 1
   force_delete              = true
   vpc_zone_identifier       = [aws_subnet.public_B.id, aws_subnet.public_A.id]
+  # target_group_arns = [aws_lb_target_group.bakery_demo_TG.arn]
   mixed_instances_policy {
     launch_template {
       launch_template_specification {
@@ -307,5 +308,23 @@ resource "aws_autoscaling_group" "bar" {
         weighted_capacity = "2"
       }
     }
+  }
+}
+
+resource "aws_lb_target_group" "bakery_demo_TG" {
+  name     = "bakery-demo-TG"
+  port     = 3000
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.main.id
+}
+
+resource "aws_lb_listener" "front_end" {
+  load_balancer_arn = aws_lb.app_lb.arn
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.bakery_demo_TG.arn
   }
 }
