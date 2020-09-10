@@ -38,6 +38,7 @@ jobs:
     - name: Get AMI ID
       run: |
             sudo apt-get -y upgrade
+            pip install setuptools
             pip install --upgrade setuptools
             pip3 install boto3
             pip3 install pytz
