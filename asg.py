@@ -18,7 +18,7 @@ def start_instance_refresh(asgname):
     AutoScalingGroupName=asgname,
     Strategy='Rolling',
     Preferences={
-        'MinHealthyPercentage': 10,
+        'MinHealthyPercentage': 0,
         'InstanceWarmup': 30
     })
     print(response["InstanceRefreshId"])

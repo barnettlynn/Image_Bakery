@@ -191,6 +191,7 @@ resource "aws_eip" "lb_ip" {
 resource "aws_lb" "app_lb" {
     name               = "Books-Load-Balancer"
     load_balancer_type = "application"
+    security_groups = [aws_security_group.allow_tls.id]
 
     subnets = [aws_subnet.public_A.id, aws_subnet.public_B.id]
 
