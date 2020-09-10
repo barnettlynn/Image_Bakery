@@ -109,12 +109,12 @@ launchTemplateID = get_launch_template_ID("books_app_launch_template")
 amid = get_most_recent_ami("BooksApp")
 create_launch_template_version(launchTemplateID, amid)
 set_default_launch_template_version(launchTemplateID)
-set_desired_capacity(3, "bakeDemo", autoscaling)
+set_desired_capacity(3, "bakery_demo_ASG", autoscaling)
 time.sleep(120)
-refreshid = start_instance_refresh("bakeDemo")
+refreshid = start_instance_refresh("bakery_demo_ASG")
 get_refresh_data(refreshid)
 time.sleep(120)
-set_desired_capacity(1, "bakeDemo", autoscaling)
+set_desired_capacity(1, "bakery_demo_ASG", autoscaling)
 
 
 
