@@ -2,9 +2,6 @@ provider "aws" {
   region = "us-east-1"
 }
 
-# TODO: ACL
-# enable dns
-
 terraform {
   backend "s3" {
     bucket = "tfstate-lynnbarnett"
@@ -176,9 +173,6 @@ resource "aws_route_table_association" "private_b" {
   subnet_id     = aws_subnet.private_A.id
   route_table_id = aws_route_table.private_a.id
 }
-
-# export AWS_ACCESS_KEY_ID=AKIAUACF2XUCNQB24HXT
-# export AWS_SECRET_ACCESS_KEY=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
 
 resource "aws_eip" "lb_ip" {
     vpc = true

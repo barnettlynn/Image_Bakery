@@ -2,13 +2,6 @@ import boto3, json, time
 from datetime import datetime, date
 import pytz
 
-# Get refresh ID
-# Search by refresh ID
-# Remove OLD AMI's
-# Remove old LT versions?
-
-# launchTemplateID = "lt-067b01b2082ab60c5"
-
 ec2 = boto3.client("ec2")
 autoscaling = boto3.client('autoscaling')
 
@@ -114,15 +107,3 @@ time.sleep(120)
 refreshid = start_instance_refresh("bakery_demo_ASG")
 get_refresh_data(refreshid)
 set_desired_capacity(0, "bakery_demo_ASG", autoscaling)
-
-
-
-
-
-
-
-# pipelines
-# environments
-# security groups
-# VPC flow logs
-# cloudwatch
