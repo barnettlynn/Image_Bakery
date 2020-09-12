@@ -2,6 +2,24 @@ provider "aws" {
   region = "us-east-1"
 }
 
+# TODO: ACL
+# enable dns
+# aws organizations
+# aws control tower
+# tag policy
+# aws organizanoal strategy
+# sso 
+# iam policy
+
+# resource "aws_organizations_organization" "org" {
+#   feature_set = "ALL"
+# }
+
+# resource "aws_organizations_account" "account" {
+#   name  = "prod"
+#   email = "barnettlynn@gmail.com"
+# }
+
 terraform {
   backend "s3" {
     bucket = "tfstate-lynnbarnett"
@@ -9,6 +27,59 @@ terraform {
     region = "us-east-1"
   }
 }
+
+resource "aws_iam_role" "app_role" {
+  name = "app_role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+
+  tags = {
+    Name = "App Role"
+    App = "Boiler"
+  }
+}
+
+resource "aws_iam_policy" "policy" {
+  name        = "test-policy"
+  description = "A test policy"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "ec2:Describe*"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
+
+resource "aws_iam_role_policy_attachment" "test-attach" {
+  role       = aws_iam_role.app_role.name
+  policy_arn = aws_iam_policy.policy.arn
+}
+
+
 
 resource "aws_vpc" "main" {
   cidr_block       = "10.0.0.0/16"
