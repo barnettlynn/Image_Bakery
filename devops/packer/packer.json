@@ -5,13 +5,13 @@
         "region": "us-east-1",
         "vpc_filter": {
           "filters": {
-            "tag:Name": "Boiler-VPC",
+            "tag:Name": "boiler-VPC",
             "isDefault": "false"
           }
         },
         "subnet_filter": {
           "filters": {
-            "tag:App": "Boiler",
+            "tag:App": "boiler",
             "tag:Type":  "public"
           },
           "most_free": true,

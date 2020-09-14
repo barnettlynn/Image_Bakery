@@ -20,6 +20,11 @@ provider "aws" {
 #   email = "barnettlynn@gmail.com"
 # }
 
+locals {
+  app_name = "boiler"
+}
+
+
 terraform {
   backend "s3" {
     bucket = "tfstate-lynnbarnett"
@@ -44,8 +49,8 @@ resource "aws_iam_role" "app_role" {
       "Sid": ""
     }
   ]
-}
-EOF
+ }
+ EOF
 
   tags = {
     Name = "App Role"
@@ -69,7 +74,7 @@ resource "aws_iam_policy" "policy" {
       "Resource": "*"
     }
   ]
-}
+ }
 EOF
 }
 
@@ -79,15 +84,13 @@ resource "aws_iam_role_policy_attachment" "test-attach" {
   policy_arn = aws_iam_policy.policy.arn
 }
 
-
-
 resource "aws_vpc" "main" {
   cidr_block       = "10.0.0.0/16"
   instance_tenancy = "default"
 
   tags = {
-    Name = "Boiler-VPC"
-    App = "Boiler"
+    Name = "${local.app_name}-VPC"
+    App = local.app_name
   }
 }
 
@@ -99,8 +102,8 @@ resource "aws_subnet" "public_A" {
 
   tags = {
     Name = "public_A"
-    Type = "public",
-    App = "Boiler"
+    Type = "public"
+    App = local.app_name
   }
 }
 
@@ -112,7 +115,7 @@ resource "aws_subnet" "public_B" {
   tags = {
     Name = "public_B"
     Type = "public"
-    App = "Boiler"
+    App = local.app_name
   }
 }
 
@@ -123,7 +126,7 @@ resource "aws_subnet" "private_A" {
   tags = {
     Name = "private_A"
     Type = "private"
-    App = "Boiler"
+    App = local.app_name
   }
 }
 
@@ -134,7 +137,7 @@ resource "aws_subnet" "private_B" {
   tags = {
     Name = "private_B"
     Type = "private"
-    App = "Boiler"
+    App = local.app_name
   }
 }
 
@@ -143,7 +146,7 @@ resource "aws_internet_gateway" "internet_gateway" {
 
   tags = {
     Name = "Internet Gateway"
-    App = "Boiler"
+    App = local.app_name
   }
 }
 
@@ -151,7 +154,7 @@ resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
   tags = {
     Name = "Private_Route_Table_A"
-    App = "Boiler"
+    App = local.app_name
   }
 }
 
@@ -175,7 +178,7 @@ resource "aws_eip" "nat_ip_A" {
     vpc = true
     tags = {
         Name = "NAT_Gateway_A_IP"
-        App = "Boiler"
+        App = local.app_name
     }
 }
 
@@ -183,7 +186,7 @@ resource "aws_eip" "nat_ip_B" {
     vpc = true
     tags = {
         Name = "NAT_Gateway_B_IP"
-        App = "Boiler"
+        App = local.app_name
     }
 }
 
@@ -193,7 +196,7 @@ resource "aws_nat_gateway" "nat_A" {
 
   tags = {
     Name = "NAT_Gateway_A"
-    App = "Boiler"
+    App = local.app_name
   }
 }
 
@@ -203,15 +206,15 @@ resource "aws_nat_gateway" "nat_B" {
 
   tags = {
     Name = "NAT_Gateway_B"
-    App = "Boiler"
+    App = local.app_name
   }
-}
+}   
 
 resource "aws_route_table" "private_a" {
   vpc_id = aws_vpc.main.id
   tags = {
     Name = "Private_Route_Table_A"
-    App = "Boiler"
+    App = local.app_name
   }
 }
 
@@ -219,7 +222,7 @@ resource "aws_route_table" "private_b" {
   vpc_id = aws_vpc.main.id
   tags = {
     Name = "Private_Route_Table_B"
-    App = "Boiler"
+    App = local.app_name
   }
 }
 
@@ -249,7 +252,7 @@ resource "aws_eip" "lb_ip" {
     vpc = true
     tags = {
         Name = "LB_IP"
-        App = "Boiler"
+        App = local.app_name
     }
 }
 
@@ -262,7 +265,7 @@ resource "aws_lb" "app_lb" {
 
     tags = {
         Name = "Books_load_balancer"
-        App = "Boiler"
+        App = local.app_name
     }
 }
 
@@ -311,7 +314,7 @@ resource "aws_security_group" "allow_tls" {
   }
 
   tags = {
-    Name = "Boiler"
+    Name = local.app_name
   }
 }
 
@@ -339,11 +342,10 @@ resource "aws_launch_template" "base_launch_template" {
 
   vpc_security_group_ids = [aws_security_group.allow_tls.id]
 
-  user_data = filebase64("./user-data.sh")
-
+  user_data = filebase64("./devops/infra/user-data.sh")
   tags = {
         Name = "Books_load_balancer"
-        App = "Boiler"
+        App = local.app_name
   }
 }
 
